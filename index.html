@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тест на инсулинорезистентность</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --accent: #4fc3f7;
+    --accent2: #81d4fa;
+    --green: #66bb6a;
+    --yellow: #ffa726;
+    --orange: #ef6c00;
+    --red: #ef5350;
+    --text: #e8eaf6;
+    --muted: #7986cb;
+    --border: rgba(79,195,247,0.15);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(79,195,247,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(129,212,250,0.05) 0%, transparent 50%);
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: rgba(79,195,247,0.1);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--accent) 0%, #fff 60%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    margin-bottom: 36px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .progress-bar-bg {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .question-number {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    color: var(--text);
+    font-size: 15px;
+    font-family: 'Lato', sans-serif;
+    text-align: left;
+  }
+
+  .option:hover {
+    border-color: var(--accent);
+    background: rgba(79,195,247,0.07);
+    transform: translateX(4px);
+  }
+
+  .option.selected {
+    border-color: var(--accent);
+    background: rgba(79,195,247,0.13);
+    color: var(--accent2);
+  }
+
+  .option-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--muted);
+    flex-shrink: 0;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .option.selected .option-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  .option.selected .option-dot::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--bg);
+    border-radius: 50%;
+  }
+
+  .option-score {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .option.selected .option-score {
+    color: var(--accent);
+  }
+
+  /* NAVIGATION */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .btn {
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-back {
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .btn-back:hover {
+    color: var(--text);
+    border-color: var(--muted);
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: var(--bg);
+    flex: 1;
+    max-width: 240px;
+  }
+
+  .btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(79,195,247,0.3);
+  }
+
+  .btn-next:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* RESULT */
+  #result {
+    display: none;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .result-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 44px 36px;
+    text-align: center;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .result-icon {
+    font-size: 56px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .result-score-wrap {
+    margin: 0 auto 24px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid;
+    position: relative;
+  }
+
+  .result-score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .result-score-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .result-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .result-level {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .result-desc {
+    font-size: 15px;
+    color: #b0bec5;
+    line-height: 1.8;
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+
+  .result-disclaimer {
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    margin-top: 4px;
+  }
+
+  /* LEVELS INDICATOR */
+  .levels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .level-item {
+    padding: 12px 8px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    opacity: 0.4;
+    transition: all 0.3s;
+  }
+
+  .level-item.active {
+    opacity: 1;
+    border-color: currentColor;
+  }
+
+  .level-item .level-range {
+    font-size: 11px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .level-item .level-name {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* SHARE SECTION */
+  .share-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+  }
+
+  .share-section h3 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .share-section p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .btn-restart {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-restart:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* SHEETS STATUS */
+  .sheets-status {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 12px;
+    min-height: 18px;
+  }
+
+  /* START SCREEN */
+  #start-screen {
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .start-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 36px;
+    margin-bottom: 24px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .info-item {
+    text-align: center;
+    padding: 20px 12px;
+    background: var(--surface2);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .info-item .info-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .info-item .info-val { font-size: 18px; font-weight: 700; color: var(--accent); display: block; }
+  .info-item .info-lbl { font-size: 12px; color: var(--muted); }
+
+  .start-desc {
+    font-size: 15px;
+    color: #90a4ae;
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+
+  .btn-start {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: var(--bg);
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+
+  .btn-start:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(79,195,247,0.35);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 500px) {
+    .question-card, .result-card, .start-card, .share-section { padding: 24px 18px; }
+    .info-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .levels { grid-template-columns: repeat(2, 1fr); }
+    .question-text { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">🔬 Медицинский тест</div>
+    <h1>Тест на инсулинорезистентность</h1>
+    <p>Оцените симптомы и узнайте степень риска нарушения чувствительности клеток к инсулину</p>
+  </div>
+
+  <!-- START SCREEN -->
+  <div id="start-screen">
+    <div class="start-card">
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-icon">📋</span>
+          <span class="info-val">16</span>
+          <span class="info-lbl">вопросов</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">⏱️</span>
+          <span class="info-val">~2</span>
+          <span class="info-lbl">минуты</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">✅</span>
+          <span class="info-val">0₽</span>
+          <span class="info-lbl">бесплатно</span>
+        </div>
+      </div>
+      <p class="start-desc">
+        <strong style="color:var(--text)">Инсулинорезистентность</strong> — это снижение чувствительности клеток к действию инсулина с последующим нарушением метаболизма глюкозы. Для каждого вопроса оцените, как часто у вас появляется описанный симптом.
+      </p>
+      <button class="btn-start" onclick="startTest()">Начать тест →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz" style="display:none">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">Вопрос 1 из 16</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+    </div>
+
+    <div class="question-card" id="question-card">
+      <div class="question-number" id="q-number">Вопрос 1</div>
+      <div class="question-text" id="q-text"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" id="btn-back" onclick="prevQuestion()">← Назад</button>
+      <button class="btn btn-next" id="btn-next" onclick="nextQuestion()" disabled>Далее →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result">
+    <div class="result-card" id="result-card">
+      <div class="result-score-wrap" id="score-circle">
+        <span class="result-score-num" id="score-num">0</span>
+        <span class="result-score-label">баллов</span>
+      </div>
+      <div class="result-level" id="result-level"></div>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-desc" id="result-desc"></div>
+
+      <div class="levels" id="levels-grid"></div>
+
+      <p class="result-disclaimer">
+        ⚠️ Тест носит информационный характер и не является медицинским диагнозом.<br>
+        При высоких баллах обратитесь к врачу-эндокринологу.
+      </p>
+    </div>
+
+    <div class="share-section">
+      <h3>Поделитесь тестом</h3>
+      <p>Отправьте ссылку друзьям или в вашу группу</p>
+      <button class="btn-restart" onclick="restartTest()">🔄 Пройти тест снова</button>
+      <div class="sheets-status" id="sheets-status"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// =============================================
+// НАСТРОЙКА: вставьте сюда ваш Google Apps Script URL
+// после деплоя (см. инструкцию ниже)
+// =============================================
+const SHEETS_URL = ""; // например: "https://script.google.com/macros/s/XXXX/exec"
+
+const questions = [
+  "Появляется ли у Вас слабость?",
+  "Присутствует ли нервное возбуждение от голода?",
+  "Бывает ли у Вас лёгкое покалывание в кистях рук?",
+  "Начинается ли сильное и быстрое сердцебиение?",
+  "Начинают ли трястись и дрожать руки?",
+  "Начинается ли внезапное обильное потоотделение и/или кожа становится влажной и липкой?",
+  "Бывают ли ночные кошмары, возможно связанные с тем, что Вы легли спать на голодный желудок?",
+  "Вы просыпаетесь ночью, чувствуя усталость?",
+  "Испытываете ли волнение, легко расстраиваетесь, нервничаете?",
+  "Начинаются ли проблемы с памятью, забывчивостью?",
+  "Появляется ли запутанность в мыслях, дезориентированность?",
+  "Появляется ли головокружение, обморочные состояния?",
+  "Появляется ли чувство холода или оцепенение?",
+  "Появляется ли головная боль?",
+  "В глазах расплывается или двоится?",
+  "Появляется ли неловкость, нарушение координации?"
+];
+
+const options = [
+  { label: "Нет или редко", score: 0 },
+  { label: "Иногда",        score: 1 },
+  { label: "Часто",         score: 2 },
+  { label: "Очень часто",   score: 3 }
+];
+
+const levels = [
+  { min: 0,  max: 5,  icon: "✅", color: "#66bb6a", title: "Признаков нет",       level: "Минимальный риск",   range: "0–5",
+    desc: "Признаков инсулинорезистентности нет. Продолжайте вести здоровый образ жизни, следите за питанием и физической активностью." },
+  { min: 6,  max: 15, icon: "⚠️", color: "#ffa726", title: "Лёгкая степень риска", level: "Лёгкая степень",     range: "6–15",
+    desc: "Есть некоторые признаки риска. Рекомендуется профилактическая консультация врача, снижение потребления простых углеводов и регулярная физическая активность." },
+  { min: 16, max: 30, icon: "🔶", color: "#ef6c00", title: "Умеренная степень риска", level: "Умеренная степень", range: "16–30",
+    desc: "Необходимо пройти обследование: анализ крови на глюкозу натощак, инсулин и расчёт индекса HOMA-IR. Обратитесь к врачу-эндокринологу для уточнения диагноза." },
+  { min: 31, max: 48, icon: "🔴", color: "#ef5350", title: "Высокая степень риска", level: "Высокая степень",    range: "31–48",
+    desc: "Высокая вероятность инсулинорезистентности. Срочно обратитесь к врачу-эндокринологу для полноценного обследования и назначения лечения." }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+function startTest() {
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'fadeUp 0.4s ease both';
+
+  document.getElementById('q-number').textContent = `Вопрос ${current + 1}`;
+  document.getElementById('q-text').textContent = questions[current];
+
+  const optionsEl = document.getElementById('q-options');
+  optionsEl.innerHTML = '';
+
+  options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option' + (answers[current] === i ? ' selected' : '');
+    btn.innerHTML = `
+      <span class="option-dot"></span>
+      <span>${opt.label}</span>
+      <span class="option-score">${opt.score} б.</span>
+    `;
+    btn.onclick = () => selectAnswer(i);
+    optionsEl.appendChild(btn);
+  });
+
+  updateProgress();
+  document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').disabled = answers[current] === null;
+
+  const isLast = current === questions.length - 1;
+  document.getElementById('btn-next').textContent = isLast ? 'Получить результат ✓' : 'Далее →';
+}
+
+function selectAnswer(idx) {
+  answers[current] = idx;
+  document.querySelectorAll('.option').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQuestion() {
+  if (answers[current] === null) return;
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function prevQuestion() {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  }
+}
+
+function updateProgress() {
+  const answered = answers.filter(a => a !== null).length;
+  const pct = Math.round((answered / questions.length) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `Вопрос ${current + 1} из ${questions.length}`;
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+function showResult() {
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+
+  const total = answers.reduce((sum, a) => sum + (a !== null ? options[a].score : 0), 0);
+  const lvl = levels.find(l => total >= l.min && total <= l.max) || levels[3];
+
+  // Score circle
+  const circle = document.getElementById('score-circle');
+  circle.style.borderColor = lvl.color;
+  circle.style.color = lvl.color;
+  document.getElementById('score-num').textContent = total;
+
+  // Texts
+  document.getElementById('result-level').textContent = lvl.level;
+  document.getElementById('result-level').style.color = lvl.color;
+  document.getElementById('result-title').textContent = lvl.title;
+  document.getElementById('result-desc').textContent = lvl.desc;
+
+  // Levels grid
+  const grid = document.getElementById('levels-grid');
+  grid.innerHTML = levels.map(l => `
+    <div class="level-item ${l === lvl ? 'active' : ''}" style="color:${l.color}">
+      <span class="level-range">${l.range}</span>
+      <span class="level-name">${l.icon} ${l.level.split(' ')[0]}</span>
+    </div>
+  `).join('');
+
+  // Анимация счётчика
+  animateCounter(0, total, 1000);
+
+  // Отправка в Google Sheets
+  if (SHEETS_URL) sendToSheets(total, lvl.level);
+}
+
+function animateCounter(from, to, duration) {
+  const el = document.getElementById('score-num');
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    el.textContent = Math.round(from + (to - from) * easeOut(p));
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+
+function sendToSheets(score, level) {
+  const status = document.getElementById('sheets-status');
+  status.textContent = '⏳ Сохранение результата...';
+
+  const data = {
+    timestamp: new Date().toLocaleString('ru-RU'),
+    score: score,
+    level: level,
+    answers: answers.map((a, i) => `Q${i+1}: ${a !== null ? options[a].label : '-'}`).join(' | ')
+  };
+
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(() => { status.textContent = '✅ Результат сохранён'; })
+  .catch(() => { status.textContent = ''; });
+}
+
+function restartTest() {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
