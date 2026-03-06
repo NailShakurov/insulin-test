@@ -475,6 +475,19 @@
     box-shadow: 0 12px 32px rgba(79,195,247,0.35);
   }
 
+  .btn-alt-link {
+    display: block;
+    margin-top: 14px;
+    text-align: center;
+    color: var(--accent);
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+  }
+  .btn-alt-link:hover { opacity: 1; }
+
   /* ANIMATIONS */
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-20px); }
@@ -529,6 +542,7 @@
         <strong style="color:var(--text)">Инсулинорезистентность</strong> — это снижение чувствительности клеток к действию инсулина с последующим нарушением метаболизма глюкозы. Для каждого вопроса оцените, как часто у вас появляется описанный симптом.
       </p>
       <button class="btn-start" onclick="startTest()">Начать тест →</button>
+      <a href="metabolic-test.html" class="btn-alt-link">🔬 Расширенный протокол метаболического здоровья →</a>
     </div>
   </div>
 
