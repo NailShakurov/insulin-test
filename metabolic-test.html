@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Метаболическое здоровье — Самодиагностика</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --accent: #4fc3f7;
+    --accent2: #81d4fa;
+    --green: #66bb6a;
+    --yellow: #ffa726;
+    --orange: #ef6c00;
+    --red: #ef5350;
+    --purple: #ce93d8;
+    --text: #e8eaf6;
+    --muted: #7986cb;
+    --border: rgba(79,195,247,0.15);
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 20%, rgba(79,195,247,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(206,147,216,0.05) 0%, transparent 50%);
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+  }
+
+  /* TOP NAV */
+  .top-nav {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 32px;
+    animation: fadeDown 0.5s ease both;
+  }
+
+  .top-nav a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+
+  .top-nav a:hover { color: var(--accent); }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-badge {
+    display: inline-block;
+    background: rgba(79,195,247,0.1);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 5vw, 38px);
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 16px;
+    color: #e8eaf6;
+  }
+
+  .header p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .progress-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .progress-bar-bg {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--purple));
+    border-radius: 10px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .block-dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+  }
+
+  .block-dot {
+    width: 28px;
+    height: 5px;
+    border-radius: 3px;
+    background: var(--surface2);
+    transition: all 0.3s;
+  }
+
+  .block-dot.active { background: var(--accent); }
+  .block-dot.done { background: var(--green); }
+
+  /* BLOCK HEADER CARD */
+  .block-header-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .bh-icon { font-size: 26px; flex-shrink: 0; margin-top: 2px; }
+
+  .bh-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .bh-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* QUESTION CARD */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .question-number {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  /* FUNCTIONAL TEST INSTRUCTION */
+  .test-instruction {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: #b0bec5;
+  }
+
+  .test-instruction strong {
+    color: var(--accent);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .test-norm {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--yellow);
+  }
+
+  .test-steps {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+  }
+
+  .test-steps li {
+    padding: 3px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .test-steps li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  .question-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--text);
+    margin-bottom: 28px;
+  }
+
+  /* YES / NO BUTTONS */
+  .yn-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .yn-btn {
+    padding: 20px 12px;
+    border-radius: 14px;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: transparent;
+  }
+
+  .yn-label { font-size: 22px; font-weight: 900; display: block; }
+  .yn-sub { font-size: 11px; font-weight: 400; letter-spacing: 0.3px; display: block; }
+
+  .yn-yes {
+    background: rgba(102,187,106,0.07);
+    border-color: rgba(102,187,106,0.25);
+    color: #78909c;
+  }
+
+  .yn-yes:hover {
+    background: rgba(102,187,106,0.14);
+    border-color: var(--green);
+    color: var(--green);
+    transform: translateY(-2px);
+  }
+
+  .yn-yes.selected {
+    background: rgba(102,187,106,0.16);
+    border-color: var(--green);
+    color: var(--green);
+    box-shadow: 0 4px 20px rgba(102,187,106,0.18);
+  }
+
+  .yn-no {
+    background: rgba(121,134,203,0.07);
+    border-color: rgba(121,134,203,0.18);
+    color: #78909c;
+  }
+
+  .yn-no:hover {
+    background: rgba(121,134,203,0.14);
+    border-color: var(--muted);
+    color: var(--text);
+    transform: translateY(-2px);
+  }
+
+  .yn-no.selected {
+    background: rgba(121,134,203,0.14);
+    border-color: var(--muted);
+    color: var(--text);
+    box-shadow: 0 4px 20px rgba(121,134,203,0.12);
+  }
+
+  /* NAVIGATION */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .btn {
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-back {
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .btn-back:hover { color: var(--text); border-color: var(--muted); }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: var(--bg);
+    flex: 1;
+    max-width: 240px;
+  }
+
+  .btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(79,195,247,0.3);
+  }
+
+  .btn-next:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* START SCREEN */
+  #start-screen { animation: fadeUp 0.7s ease both; }
+
+  .start-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 36px;
+    margin-bottom: 24px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 28px 0 20px;
+  }
+
+  .info-item {
+    text-align: center;
+    padding: 20px 12px;
+    background: var(--surface2);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .info-item .info-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+  .info-item .info-val  { font-size: 18px; font-weight: 700; color: var(--accent); display: block; }
+  .info-item .info-lbl  { font-size: 12px; color: var(--muted); }
+
+  .blocks-preview {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .bp-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: var(--surface2);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+
+  .bp-icon { font-size: 20px; flex-shrink: 0; }
+  .bp-name { font-size: 13px; font-weight: 700; color: var(--text); }
+  .bp-count { font-size: 11px; color: var(--muted); }
+
+  .start-desc {
+    font-size: 15px;
+    color: #90a4ae;
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+
+  .btn-start {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: var(--bg);
+    border: none;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+
+  .btn-start:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(79,195,247,0.35);
+  }
+
+  /* RESULT */
+  #result { display: none; animation: fadeUp 0.7s ease both; }
+
+  .result-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 44px 36px;
+    text-align: center;
+    border: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+
+  .result-score-wrap {
+    margin: 0 auto 24px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid;
+  }
+
+  .result-score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .result-score-label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .result-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .result-level {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .result-desc {
+    font-size: 15px;
+    color: #b0bec5;
+    line-height: 1.8;
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+
+  /* BLOCK BREAKDOWN */
+  .breakdown-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    margin-top: 28px;
+  }
+
+  .block-breakdown {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    text-align: left;
+  }
+
+  .breakdown-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+
+  .breakdown-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .breakdown-name {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .breakdown-score { font-size: 14px; font-weight: 700; }
+
+  .breakdown-bar-bg {
+    height: 4px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .breakdown-bar {
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  /* RISK LEVELS GRID */
+  .levels {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .level-item {
+    padding: 12px 8px;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    opacity: 0.4;
+    transition: all 0.3s;
+  }
+
+  .level-item.active { opacity: 1; border-color: currentColor; }
+
+  .level-item .level-range {
+    font-size: 11px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .level-item .level-name { font-size: 11px; color: var(--muted); }
+
+  .result-disclaimer {
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    margin-top: 28px;
+  }
+
+  /* SHARE */
+  .share-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+  }
+
+  .share-section h3 { font-size: 16px; margin-bottom: 6px; }
+  .share-section p  { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+
+  .share-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  .btn-secondary {
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-outlined {
+    background: rgba(79,195,247,0.08);
+    color: var(--accent);
+  }
+
+  .btn-outlined:hover { border-color: var(--accent); background: rgba(79,195,247,0.16); }
+
+  .sheets-status { font-size: 12px; color: var(--muted); margin-top: 12px; min-height: 18px; }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MOBILE */
+  @media (max-width: 500px) {
+    .question-card, .result-card, .start-card, .share-section { padding: 24px 18px; }
+    .levels       { grid-template-columns: repeat(2, 1fr); }
+    .block-breakdown { grid-template-columns: 1fr; }
+    .blocks-preview  { grid-template-columns: 1fr; }
+    .question-text { font-size: 17px; }
+    .share-btns { flex-direction: column; align-items: stretch; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- TOP NAV -->
+  <div class="top-nav">
+    <a href="index.html">← Тест на инсулинорезистентность</a>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-badge">🔬 Протокол самодиагностики</div>
+    <h1>Метаболическое здоровье</h1>
+    <p>Оценка рисков инсулинорезистентности, лептинорезистентности и саркопении</p>
+  </div>
+
+  <!-- START SCREEN -->
+  <div id="start-screen">
+    <div class="start-card">
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-icon">📋</span>
+          <span class="info-val">18</span>
+          <span class="info-lbl">вопросов</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">⏱️</span>
+          <span class="info-val">~5</span>
+          <span class="info-lbl">минут</span>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">🧩</span>
+          <span class="info-val">4</span>
+          <span class="info-lbl">блока</span>
+        </div>
+      </div>
+
+      <div class="blocks-preview">
+        <div class="bp-item">
+          <span class="bp-icon">👁</span>
+          <div>
+            <div class="bp-name">Визуальные признаки</div>
+            <div class="bp-count">5 признаков · осмотр</div>
+          </div>
+        </div>
+        <div class="bp-item">
+          <span class="bp-icon">🧠</span>
+          <div>
+            <div class="bp-name">Лептинорезистентность</div>
+            <div class="bp-count">5 вопросов · голод и сытость</div>
+          </div>
+        </div>
+        <div class="bp-item">
+          <span class="bp-icon">💪</span>
+          <div>
+            <div class="bp-name">Саркопения и осанка</div>
+            <div class="bp-count">5 признаков · дефицит мышц</div>
+          </div>
+        </div>
+        <div class="bp-item">
+          <span class="bp-icon">🏃</span>
+          <div>
+            <div class="bp-name">Функциональные тесты</div>
+            <div class="bp-count">3 теста · выполните прямо сейчас</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="start-desc">
+        Для каждого утверждения отвечайте <strong style="color:var(--text)">«ДА»</strong>,
+        если признак присутствует. В блоке 4 выполните физические упражнения прямо сейчас
+        и оцените результат.
+      </p>
+      <button class="btn-start" onclick="startTest()">Начать тест →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz" style="display:none">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">Вопрос 1 из 18</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <div class="block-dots" id="block-dots"></div>
+    </div>
+
+    <div id="block-header" style="display:none" class="block-header-card">
+      <span class="bh-icon" id="bh-icon"></span>
+      <div>
+        <div class="bh-title" id="bh-title"></div>
+        <div class="bh-subtitle" id="bh-subtitle"></div>
+      </div>
+    </div>
+
+    <div class="question-card" id="question-card">
+      <div class="question-number" id="q-number">Вопрос 1 из 18</div>
+      <div id="q-instruction" style="display:none" class="test-instruction"></div>
+      <div class="question-text" id="q-text"></div>
+      <div class="yn-options">
+        <button class="yn-btn yn-yes" id="btn-yes" onclick="selectYesNo(1)">
+          <span class="yn-label">ДА</span>
+          <span class="yn-sub" id="yes-sub">есть у меня</span>
+        </button>
+        <button class="yn-btn yn-no" id="btn-no" onclick="selectYesNo(0)">
+          <span class="yn-label">НЕТ</span>
+          <span class="yn-sub" id="no-sub">не замечал(а)</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" id="btn-back" onclick="prevQuestion()">← Назад</button>
+      <button class="btn btn-next" id="btn-next" onclick="nextQuestion()" disabled>Далее →</button>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result">
+    <div class="result-card">
+      <div class="result-score-wrap" id="score-circle">
+        <span class="result-score-num" id="score-num">0</span>
+        <span class="result-score-label">баллов</span>
+      </div>
+      <div class="result-level" id="result-level"></div>
+      <div class="result-title" id="result-title"></div>
+      <div class="result-desc" id="result-desc"></div>
+
+      <div class="breakdown-title">Результат по блокам</div>
+      <div class="block-breakdown" id="block-breakdown"></div>
+
+      <div class="levels" id="levels-grid"></div>
+
+      <p class="result-disclaimer">
+        ⚠️ Тест носит информационный характер и не является медицинским диагнозом.<br>
+        При высоких баллах обратитесь к врачу-эндокринологу.
+      </p>
+    </div>
+
+    <div class="share-section">
+      <h3>Что дальше?</h3>
+      <p>Пройдите другой тест или начните заново</p>
+      <div class="share-btns">
+        <button class="btn-secondary btn-ghost" onclick="restartTest()">🔄 Пройти снова</button>
+        <a href="index.html" class="btn-secondary btn-outlined">💉 Тест на ИР →</a>
+      </div>
+      <div class="sheets-status" id="sheets-status"></div>
+    </div>
+  </div>
+
+</div>
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxQfqll2XjhCpMgpNs-Y_0h6tfSjBcVu0Uo5MCOmJUnNBqVdNdeYysPscpGnEpKbjskwA/exec';
+
+const blocksMeta = [
+  { id: 1, icon: '👁',  title: 'Блок 1 · Визуальные признаки',    subtitle: 'Отмечайте «ДА», если признак присутствует',                                                                    color: '#4fc3f7', max: 5 },
+  { id: 2, icon: '🧠', title: 'Блок 2 · Лептинорезистентность',   subtitle: 'Лептин должен выключать голод. Если этого не происходит — мозг «голодает» при избытке жира',                   color: '#ce93d8', max: 5 },
+  { id: 3, icon: '💪', title: 'Блок 3 · Саркопения и осанка',     subtitle: 'Мышцы — главный потребитель глюкозы. Нет мышц = есть инсулинорезистентность',                                   color: '#ffb74d', max: 5 },
+  { id: 4, icon: '🏃', title: 'Блок 4 · Функциональные тесты',    subtitle: 'Выполните упражнения прямо сейчас и отметьте, справились ли вы',                                                color: '#81c784', max: 3 },
+];
+
+const questions = [
+  // Block 1 — Visual signs
+  { blockId: 1, text: 'Абдоминальный жир: талия >80 см (жен) / >94 см (муж)' },
+  { blockId: 1, text: 'Тип «Skinny Fat»: вес в норме, но тело дряблое, мышц мало, есть «животик»' },
+  { blockId: 1, text: 'Чёрный акантоз: потемнение кожи на шее, в подмышках, на локтях' },
+  { blockId: 1, text: 'Папилломатоз: множественные мелкие папилломы на теле и шее' },
+  { blockId: 1, text: 'Отёчность: лицо кажется «припухшим», по утрам следы от носков долго не проходят' },
+  // Block 2 — Leptin resistance
+  { blockId: 2, text: 'Постоянный голод: хочется есть уже через 1,5–2 часа после еды' },
+  { blockId: 2, text: 'Тяга к «мусору»: сильное желание сладкого, мучного или жирного сразу после основного приёма пищи' },
+  { blockId: 2, text: 'Ночной аппетит: вечером и ночью чувство голода сильнее, чем утром' },
+  { blockId: 2, text: 'Нет чувства насыщения: не останавливаетесь, пока тарелка не опустеет (или пока не станет плохо)' },
+  { blockId: 2, text: 'Застрявший вес: диеты и спорт не дают результата (организм в режиме выживания)' },
+  // Block 3 — Sarcopenia
+  { blockId: 3, text: '«Ламбрекены»: складки и провисание кожи/мышц на спине и под лопатками' },
+  { blockId: 3, text: 'Обвисание ягодиц: мышцы теряют объём, ягодицы становятся плоскими' },
+  { blockId: 3, text: 'Гравитационный птоз: провисание овала лица, появление брылей' },
+  { blockId: 3, text: '«Косточка» (Hallux Valgus): деформация большого пальца стопы' },
+  { blockId: 3, text: 'Храп: ослабление мышц мягкого нёба и гортани' },
+  // Block 4 — Functional tests (YES = failed = 1 point)
+  {
+    blockId: 4,
+    text: 'Тест «Ласточка» не пройден: не удалось удержать баланс на одной ноге 30 секунд',
+    instruction: '<strong>Как выполнить</strong><ul class="test-steps"><li>Встаньте прямо, руки вдоль тела</li><li>Поднимите одну ногу, слегка согнув в колене</li><li>Удерживайте равновесие 30 секунд без опоры на стену или мебель</li><li>Повторите на другой ноге</li></ul><p class="test-norm">⚡ Норма: 30 сек без значительных покачиваний. Неудача = риск саркопении и нарушения нейромышечной связи.</p>',
+    yesSub: 'не справился(ась)',
+    noSub:  'справился(ась)',
+  },
+  {
+    blockId: 4,
+    text: 'Тест «Сесть-встать» не пройден: трудно сесть на пол «по-турецки» и встать без опоры на руки',
+    instruction: '<strong>Как выполнить</strong><ul class="test-steps"><li>Встаньте прямо на ровной поверхности</li><li>Сядьте на пол, скрестив ноги («по-турецки»)</li><li>Встаньте, <em>не опираясь руками о пол или колени</em> — руками можно только балансировать</li></ul><p class="test-norm">⚡ Норма: плавно сесть и встать без опоры. Трудности = критический дефицит мышечной силы и гибкости.</p>',
+    yesSub: 'не справился(ась)',
+    noSub:  'справился(ась)',
+  },
+  {
+    blockId: 4,
+    text: 'Динамометрия: сила кисти ниже нормы (муж: <75% от веса тела, жен: <65% от веса тела)',
+    instruction: '<strong>Как проверить</strong><ul class="test-steps"><li>Возьмите ручной динамометр и сожмите максимально сильно доминирующей рукой</li><li>Вычислите: результат ÷ вес тела × 100%</li></ul><p class="test-norm">⚡ Норма: муж &gt;75%, жен &gt;65% от веса тела.<br>Пример: вес 60 кг (жен) → норма &gt;39 кг на динамометре.</p>',
+    yesSub: 'ниже нормы',
+    noSub:  'в норме',
+  },
+];
+
+const levels = [
+  { min: 0,  max: 5,  icon: '✅', color: '#66bb6a', range: '0–5',   level: 'Риск низкий',      title: 'Метаболически здоров',
+    desc: 'Признаков метаболических нарушений не выявлено. Продолжайте вести здоровый образ жизни: сбалансированное питание, регулярная физическая активность, качественный сон.' },
+  { min: 6,  max: 12, icon: '⚠️', color: '#ffa726', range: '6–12',  level: 'Риск средний',     title: 'Стадия рекомпенсации',
+    desc: 'Есть начальные признаки нарушений. Рекомендуется ограничить перекусы, снизить потребление быстрых углеводов, добавить силовые тренировки и обсудить ситуацию с врачом.' },
+  { min: 13, max: 20, icon: '🔶', color: '#ef6c00', range: '13–20', level: 'Риск высокий',      title: 'Гормональный хаос',
+    desc: 'Клетки «оглохли» к сигналам сытости и инсулина. Необходима консультация эндокринолога и обследование: глюкоза натощак, инсулин, HOMA-IR, лептин.' },
+  { min: 21, max: 99, icon: '🔴', color: '#ef5350', range: '21+',   level: 'Риск критический', title: 'Высокий риск осложнений',
+    desc: 'Высокий риск развития диабета, гипертонии и других осложнений. Рекомендуется полный чекап организма и незамедлительное обращение к врачу.' },
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+function startTest() {
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('quiz').style.display = 'block';
+  renderBlockDots();
+  renderQuestion();
+}
+
+function renderBlockDots() {
+  document.getElementById('block-dots').innerHTML =
+    blocksMeta.map(b => `<div class="block-dot" id="bdot-${b.id}"></div>`).join('');
+}
+
+function updateBlockDots() {
+  const curBlockId = questions[current].blockId;
+  blocksMeta.forEach(b => {
+    const dot = document.getElementById(`bdot-${b.id}`);
+    if (!dot) return;
+    const qs = questions.filter(q => q.blockId === b.id);
+    const allDone = qs.every(q => answers[questions.indexOf(q)] !== null);
+    if (b.id < curBlockId && allDone) dot.className = 'block-dot done';
+    else if (b.id === curBlockId)     dot.className = 'block-dot active';
+    else                              dot.className = 'block-dot';
+  });
+}
+
+function renderQuestion() {
+  const q = questions[current];
+
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'fadeUp 0.4s ease both';
+
+  // Block header — show only when entering a new block
+  const isFirstInBlock = current === 0 || questions[current - 1].blockId !== q.blockId;
+  const bh = document.getElementById('block-header');
+  if (isFirstInBlock) {
+    const b = blocksMeta.find(b => b.id === q.blockId);
+    bh.style.display = 'flex';
+    bh.style.animation = 'none';
+    void bh.offsetWidth;
+    bh.style.animation = 'fadeUp 0.4s ease both';
+    document.getElementById('bh-icon').textContent = b.icon;
+    document.getElementById('bh-title').textContent = b.title;
+    document.getElementById('bh-title').style.color  = b.color;
+    document.getElementById('bh-subtitle').textContent = b.subtitle;
+  } else {
+    bh.style.display = 'none';
+  }
+
+  // Question number
+  document.getElementById('q-number').textContent = `Вопрос ${current + 1} из ${questions.length}`;
+
+  // Instruction (functional tests only)
+  const instrEl = document.getElementById('q-instruction');
+  if (q.instruction) {
+    instrEl.innerHTML = q.instruction;
+    instrEl.style.display = 'block';
+  } else {
+    instrEl.style.display = 'none';
+  }
+
+  // Question text
+  document.getElementById('q-text').textContent = q.text;
+
+  // YES / NO button subtitles
+  document.getElementById('yes-sub').textContent = q.yesSub || 'есть у меня';
+  document.getElementById('no-sub').textContent  = q.noSub  || 'не замечал(а)';
+
+  // Restore selected state
+  const ans = answers[current];
+  document.getElementById('btn-yes').classList.toggle('selected', ans === 1);
+  document.getElementById('btn-no').classList.toggle('selected',  ans === 0);
+
+  // Nav
+  document.getElementById('btn-back').style.visibility = current === 0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').disabled = answers[current] === null;
+  document.getElementById('btn-next').textContent =
+    current === questions.length - 1 ? 'Получить результат ✓' : 'Далее →';
+
+  updateProgress();
+  updateBlockDots();
+}
+
+function selectYesNo(val) {
+  answers[current] = val;
+  document.getElementById('btn-yes').classList.toggle('selected', val === 1);
+  document.getElementById('btn-no').classList.toggle('selected',  val === 0);
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQuestion() {
+  if (answers[current] === null) return;
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function prevQuestion() {
+  if (current > 0) { current--; renderQuestion(); }
+}
+
+function updateProgress() {
+  const answered = answers.filter(a => a !== null).length;
+  const pct = Math.round((answered / questions.length) * 100);
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = `Вопрос ${current + 1} из ${questions.length}`;
+  document.getElementById('progress-pct').textContent  = pct + '%';
+}
+
+function showResult() {
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+
+  const total = answers.reduce((sum, a) => sum + (a || 0), 0);
+  const lvl   = levels.find(l => total >= l.min && total <= l.max) || levels[3];
+
+  // Score circle
+  const circle = document.getElementById('score-circle');
+  circle.style.borderColor = lvl.color;
+  circle.style.color       = lvl.color;
+  document.getElementById('score-num').textContent    = total;
+  document.getElementById('result-level').textContent = lvl.level;
+  document.getElementById('result-level').style.color = lvl.color;
+  document.getElementById('result-title').textContent = lvl.title;
+  document.getElementById('result-desc').textContent  = lvl.desc;
+
+  // Block breakdown
+  document.getElementById('block-breakdown').innerHTML = blocksMeta.map(b => {
+    const score = questions
+      .filter(q => q.blockId === b.id)
+      .reduce((sum, q) => sum + (answers[questions.indexOf(q)] || 0), 0);
+    const pct = b.max > 0 ? Math.round((score / b.max) * 100) : 0;
+    return `
+      <div class="breakdown-item">
+        <div class="breakdown-header">
+          <span class="breakdown-name">${b.icon} ${b.title.split('·')[1].trim()}</span>
+          <span class="breakdown-score" style="color:${b.color}">${score}/${b.max}</span>
+        </div>
+        <div class="breakdown-bar-bg">
+          <div class="breakdown-bar" style="width:${pct}%;background:${b.color}"></div>
+        </div>
+      </div>`;
+  }).join('');
+
+  // Levels indicator
+  document.getElementById('levels-grid').innerHTML = levels.map(l => `
+    <div class="level-item ${l === lvl ? 'active' : ''}" style="color:${l.color}">
+      <span class="level-range">${l.range}</span>
+      <span class="level-name">${l.icon} ${l.level.split(' ').slice(1).join(' ')}</span>
+    </div>`).join('');
+
+  animateCounter(0, total, 900);
+  if (SHEETS_URL) sendToSheets(total, lvl.level);
+}
+
+function animateCounter(from, to, duration) {
+  const el    = document.getElementById('score-num');
+  const start = performance.now();
+  function step(now) {
+    const p = Math.min((now - start) / duration, 1);
+    el.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function sendToSheets(score, level) {
+  const status = document.getElementById('sheets-status');
+  status.textContent = '⏳ Сохранение результата...';
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      timestamp: new Date().toLocaleString('ru-RU'),
+      test: 'metabolic',
+      score,
+      level,
+      answers: answers.map((a, i) => `Q${i + 1}: ${a === 1 ? 'ДА' : 'НЕТ'}`).join(' | '),
+    }),
+  })
+  .then(() => { status.textContent = '✅ Результат сохранён'; })
+  .catch(() => { status.textContent = ''; });
+}
+
+function restartTest() {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
